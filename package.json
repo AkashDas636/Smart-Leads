@@ -1,7 +1,7 @@
 {
   "name": "smart-leads",
   "private": true,
-  "packageManager": "pnpm@9.x",
+  "packageManager": "pnpm@9.12.3",
   "scripts": {
     "build": "cd frontend && pnpm run build",
     "start": "cd frontend && pnpm run dev"
