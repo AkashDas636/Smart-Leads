@@ -1,4 +1,5 @@
 {
-  "buildCommand": "corepack enable && cd frontend && pnpm install && pnpm run build",
-  "outputDirectory": "frontend/dist"
+  "buildCommand": "cd frontend && pnpm install --frozen-lockfile && npm run build",
+  "outputDirectory": "frontend/dist",
+  "installCommand": "cd frontend && pnpm install --frozen-lockfile"
 }
