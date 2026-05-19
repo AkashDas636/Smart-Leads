@@ -32,7 +32,7 @@
     "mongodb"
   ],
   "engines": {
-    "node": ">=18.0.0",
+    "node": ">=18 <26",
     "pnpm": ">=9.0.0"
   },
   "repository": {
