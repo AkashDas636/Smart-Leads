@@ -2,6 +2,7 @@
   "name": "smart-leads-backend",
   "version": "1.0.0",
   "description": "Smart Leads Dashboard — Express + TypeScript Backend",
+  "type": "module",
   "main": "dist/server.js",
   "scripts": {
     "dev": "tsx watch src/server.ts",
