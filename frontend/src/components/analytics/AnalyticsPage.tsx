@@ -15,9 +15,9 @@ function Bar({ label, value, max, color }: { label: string; value: number; max: 
   );
 }
 
-function Donut({ data }: { data: { label: string; value: number; color: string }[] }) {
+function Donut({ data }: { data: { label: string; value: number; color: string; icon?: string }[] }) {
   const total = data.reduce((s, d) => s + d.value, 0);
-  if (total === 0) return <div className="text-xs text-muted-foreground text-center py-8">No data</div>;
+  if (total === 0) return <div className="text-sm text-muted-foreground text-center py-12">No data available</div>;
 
   let offset = 0;
   const r = 60;
@@ -32,9 +32,9 @@ function Donut({ data }: { data: { label: string; value: number; color: string }
   });
 
   return (
-    <div className="flex items-center gap-6">
-      <svg width="140" height="140" viewBox="0 0 140 140" className="flex-shrink-0">
-        <circle cx="70" cy="70" r={r} fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="16" />
+    <div className="flex items-center gap-8">
+      <svg width="160" height="160" viewBox="0 0 140 140" className="flex-shrink-0 drop-shadow-lg">
+        <circle cx="70" cy="70" r={r} fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="16" />
         {segments.map((seg, i) => (
           <circle
             key={i}
@@ -47,19 +47,24 @@ function Donut({ data }: { data: { label: string; value: number; color: string }
             strokeDasharray={`${seg.dash} ${seg.gap}`}
             strokeDashoffset={-seg.offset}
             strokeLinecap="round"
-            style={{ transform: 'rotate(-90deg)', transformOrigin: '70px 70px' }}
+            className="transition-all duration-500 hover:opacity-75"
+            style={{ transform: 'rotate(-90deg)', transformOrigin: '70px 70px', filter: 'drop-shadow(0 0 6px ' + seg.color + '40)' }}
           />
         ))}
-        <text x="70" y="70" textAnchor="middle" dominantBaseline="central" fill="white" fontSize="20" fontWeight="700">{total}</text>
-        <text x="70" y="86" textAnchor="middle" fill="#64748b" fontSize="9">total</text>
+        <text x="70" y="68" textAnchor="middle" dominantBaseline="central" fill="white" fontSize="24" fontWeight="700">{total}</text>
+        <text x="70" y="88" textAnchor="middle" fill="#94a3b8" fontSize="10" fontWeight="600">total</text>
       </svg>
-      <div className="space-y-2 flex-1">
+      <div className="space-y-3 flex-1">
         {segments.map((seg, i) => (
-          <div key={i} className="flex items-center gap-2">
-            <div className="w-2.5 h-2.5 rounded-sm flex-shrink-0" style={{ background: seg.color }} />
-            <span className="text-xs text-muted-foreground flex-1">{seg.label}</span>
-            <span className="text-xs font-semibold text-foreground">{seg.value}</span>
-            <span className="text-xs text-muted-foreground">({Math.round((seg.value / total) * 100)}%)</span>
+          <div key={i} className="flex items-center gap-3 p-2 rounded-lg hover:bg-cyan-500/5 transition-colors duration-200" style={{ animation: `fade-in 0.3s ease ${i * 50}ms both` }}>
+            <div className="flex items-center gap-2 flex-1 min-w-0">
+              <div className="w-3 h-3 rounded-full flex-shrink-0 shadow-md" style={{ background: seg.color, boxShadow: `0 0 8px ${seg.color}40` }} />
+              <span className="text-sm font-semibold text-foreground flex-shrink-0">{seg.icon || ''} {seg.label}</span>
+            </div>
+            <div className="flex items-center gap-2 flex-shrink-0">
+              <span className="text-sm font-bold text-cyan-400">{seg.value}</span>
+              <span className="text-xs text-muted-foreground">({Math.round((seg.value / total) * 100)}%)</span>
+            </div>
           </div>
         ))}
       </div>
@@ -81,19 +86,23 @@ function MonthlyTrend({ leads }: { leads: Lead[] }) {
   const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
   return (
-    <div className="flex items-end gap-2 h-32 mt-4">
-      {sorted.map(([key, val]) => {
+    <div className="flex items-end gap-3 h-40 mt-6 px-2">
+      {sorted.map(([key, val], idx) => {
         const [, m] = key.split('-');
         const h = (val / max) * 100;
         return (
-          <div key={key} className="flex-1 flex flex-col items-center gap-1.5">
-            <span className="text-[10px] text-muted-foreground">{val}</span>
+          <div 
+            key={key} 
+            className="flex-1 flex flex-col items-center gap-2 group cursor-pointer"
+            style={{ animation: `slide-in-from-bottom 0.3s ease ${idx * 50}ms both` }}
+          >
+            <span className="text-xs font-bold text-cyan-400 group-hover:text-cyan-300 transition-colors">{val}</span>
             <div
-              className="w-full rounded-t-lg bg-gradient-to-t from-cyan-500/60 to-indigo-500/60 hover:from-cyan-500 hover:to-indigo-500 transition-colors cursor-pointer"
-              style={{ height: `${Math.max(h, 4)}%` }}
+              className="w-full rounded-t-lg bg-gradient-to-t from-cyan-500 to-indigo-500 hover:from-cyan-400 hover:to-indigo-400 transition-all duration-200 cursor-pointer group-hover:shadow-lg group-hover:scale-110 origin-bottom"
+              style={{ height: `${Math.max(h, 6)}%` }}
               title={`${key}: ${val} leads`}
             />
-            <span className="text-[10px] text-muted-foreground">{monthNames[parseInt(m) - 1]}</span>
+            <span className="text-xs text-muted-foreground group-hover:text-foreground transition-colors font-semibold">{monthNames[parseInt(m) - 1]}</span>
           </div>
         );
       })}
@@ -105,10 +114,10 @@ export default function AnalyticsPage() {
   const { allLeads, stats } = useLeads();
 
   const statusData = [
-    { label: 'New', value: stats.new, color: '#3b82f6' },
-    { label: 'Contacted', value: stats.contacted, color: '#f59e0b' },
-    { label: 'Qualified', value: stats.qualified, color: '#10b981' },
-    { label: 'Lost', value: stats.lost, color: '#f43f5e' },
+    { label: 'New', value: stats.new, color: '#3b82f6', icon: '🆕' },
+    { label: 'Contacted', value: stats.contacted, color: '#f59e0b', icon: '📞' },
+    { label: 'Qualified', value: stats.qualified, color: '#10b981', icon: '✓' },
+    { label: 'Lost', value: stats.lost, color: '#f43f5e', icon: '✕' },
   ];
 
   const sourceData = [
@@ -120,28 +129,38 @@ export default function AnalyticsPage() {
   const maxSource = Math.max(...sourceData.map(d => d.value), 1);
 
   return (
-    <div className="space-y-5">
-      <div>
-        <h2 className="text-lg font-semibold text-foreground">Analytics</h2>
-        <p className="text-xs text-muted-foreground mt-0.5">Performance overview of your lead pipeline</p>
+    <div className="space-y-8">
+      {/* Header */}
+      <div className="animate-in fade-in slide-in-from-top duration-500">
+        <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-foreground via-foreground to-cyan-400 bg-clip-text text-transparent">Analytics</h2>
+        <p className="text-sm text-muted-foreground mt-2">Performance overview of your lead pipeline</p>
       </div>
 
-      {/* Conversion Rate */}
-      <div className="bg-gradient-to-r from-cyan-500/10 to-indigo-500/10 border border-cyan-500/20 rounded-2xl p-5">
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-sm text-muted-foreground">Conversion Rate</p>
-            <p className="text-4xl font-bold text-foreground mt-1">{stats.conversionRate}<span className="text-2xl text-muted-foreground">%</span></p>
-            <p className="text-xs text-muted-foreground mt-1">Leads converted to Qualified</p>
+      {/* Conversion Rate - Enhanced */}
+      <div className="bg-gradient-to-br from-cyan-500/15 to-indigo-500/15 border border-cyan-500/30 rounded-2xl p-8 shadow-card hover:shadow-card-lg transition-all duration-300 animate-in fade-in slide-in-from-bottom duration-500 hover:border-cyan-500/50 group overflow-hidden relative">
+        {/* Background glow */}
+        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-br from-cyan-500/5 to-indigo-500/5 pointer-events-none" />
+        
+        <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
+          <div className="flex-1">
+            <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Conversion Rate</p>
+            <p className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-cyan-400 to-indigo-400 bg-clip-text text-transparent mt-3 group-hover:scale-110 transition-transform duration-300 origin-left">
+              {stats.conversionRate}<span className="text-2xl text-muted-foreground">%</span>
+            </p>
+            <p className="text-sm text-muted-foreground mt-3">Leads successfully converted to Qualified status</p>
           </div>
-          <div className="relative w-24 h-24">
+          <div className="relative w-32 h-32 flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
             <svg viewBox="0 0 36 36" className="w-full h-full -rotate-90">
-              <circle cx="18" cy="18" r="15.9" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="3" />
+              <circle cx="18" cy="18" r="15.9" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="3" />
               <circle
                 cx="18" cy="18" r="15.9" fill="none"
                 stroke="url(#convGrad)" strokeWidth="3"
                 strokeDasharray={`${stats.conversionRate} ${100 - stats.conversionRate}`}
                 strokeLinecap="round"
+                className="transition-all duration-700"
+                style={{
+                  filter: 'drop-shadow(0 0 8px rgba(34, 211, 238, 0.3))'
+                }}
               />
               <defs>
                 <linearGradient id="convGrad" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -151,38 +170,45 @@ export default function AnalyticsPage() {
               </defs>
             </svg>
             <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-sm font-bold text-cyan-400">{stats.conversionRate}%</span>
+              <span className="text-lg font-bold text-cyan-300 group-hover:scale-110 transition-transform">{stats.conversionRate}%</span>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {/* Charts Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Status breakdown */}
-        <div className="bg-card border border-border rounded-2xl p-5">
-          <h3 className="text-sm font-semibold text-foreground mb-4">Lead Status</h3>
+        <div className="bg-card border border-border rounded-2xl p-8 shadow-card hover:shadow-card-lg transition-all duration-300 animate-in fade-in slide-in-from-bottom duration-500 delay-100">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-lg font-bold text-foreground">Lead Status</h3>
+            <span className="text-xs font-semibold text-cyan-400 bg-cyan-500/10 px-3 py-1 rounded-lg">Distribution</span>
+          </div>
           <Donut data={statusData} />
         </div>
 
         {/* Source breakdown */}
-        <div className="bg-card border border-border rounded-2xl p-5">
-          <h3 className="text-sm font-semibold text-foreground mb-4">Lead Sources</h3>
-          <div className="space-y-3 mt-2">
-            {sourceData.map(s => (
-              <Bar key={s.label} label={s.label} value={s.value} max={maxSource} color={`bg-[${s.color}]`} />
-            ))}
+        <div className="bg-card border border-border rounded-2xl p-8 shadow-card hover:shadow-card-lg transition-all duration-300 animate-in fade-in slide-in-from-bottom duration-500 delay-200">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-lg font-bold text-foreground">Lead Sources</h3>
+            <span className="text-xs font-semibold text-indigo-400 bg-indigo-500/10 px-3 py-1 rounded-lg">Performance</span>
           </div>
-          <div className="mt-4 space-y-3">
-            {sourceData.map(s => (
-              <div key={s.label} className="flex items-center gap-3">
-                <span className="text-xs text-muted-foreground w-20 flex-shrink-0">{s.label}</span>
-                <div className="flex-1 h-2 bg-card rounded-full overflow-hidden">
+          <div className="space-y-4">
+            {sourceData.map((s, idx) => (
+              <div key={s.label} style={{ animation: `slide-in-from-bottom 0.3s ease ${idx * 50}ms both` }}>
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm">📊</span>
+                    <span className="text-sm font-semibold text-foreground">{s.label}</span>
+                  </div>
+                  <span className="text-sm font-bold text-cyan-400">{s.value}</span>
+                </div>
+                <div className="h-2.5 bg-card rounded-full overflow-hidden">
                   <div
-                    className="h-full rounded-full"
-                    style={{ width: `${maxSource > 0 ? (s.value / maxSource) * 100 : 0}%`, background: s.color }}
+                    className="h-full rounded-full transition-all duration-700 shadow-md hover:shadow-lg"
+                    style={{ width: `${maxSource > 0 ? (s.value / maxSource) * 100 : 0}%`, background: `linear-gradient(90deg, ${s.color}, ${s.color}dd)` }}
                   />
                 </div>
-                <span className="text-xs font-semibold text-slate-300 w-6 text-right">{s.value}</span>
               </div>
             ))}
           </div>
@@ -190,13 +216,17 @@ export default function AnalyticsPage() {
       </div>
 
       {/* Monthly trend */}
-      <div className="bg-card border border-border rounded-2xl p-5">
-        <div className="flex items-center justify-between mb-2">
-          <h3 className="text-sm font-semibold text-foreground">Monthly Trend</h3>
-          <span className="text-xs text-muted-foreground">Last 8 months</span>
+      <div className="bg-card border border-border rounded-2xl p-8 shadow-card hover:shadow-card-lg transition-all duration-300 animate-in fade-in slide-in-from-bottom duration-500 delay-300">
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h3 className="text-lg font-bold text-foreground">Monthly Trend</h3>
+            <p className="text-xs text-muted-foreground mt-1">Leads generated per month (Last 8 months)</p>
+          </div>
+          <span className="text-xs font-semibold text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-lg">📈 Growth</span>
         </div>
-        <p className="text-xs text-muted-foreground mb-1">Leads generated per month</p>
-        <MonthlyTrend leads={allLeads} />
+        <div className="bg-gradient-to-b from-cyan-500/5 to-indigo-500/5 rounded-xl p-6 -m-2">
+          <MonthlyTrend leads={allLeads} />
+        </div>
       </div>
 
       {/* Quick stats */}

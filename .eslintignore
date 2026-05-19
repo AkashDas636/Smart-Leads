@@ -1,0 +1,9 @@
+node_modules
+dist
+.next
+out
+.pnpm-store
+.vite
+coverage
+.turbo
+build

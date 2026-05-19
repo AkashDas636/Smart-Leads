@@ -1,6 +1,46 @@
 # 🚀 Smart Leads Dashboard
 
-A full-stack Lead Management Dashboard built with the **MERN stack + TypeScript**.
+A professional **Lead Management Dashboard** built with the **MERN stack + TypeScript**. Track, analyze, and convert leads with a modern, responsive interface.
+
+[![Deploy to Vercel](https://img.shields.io/badge/Deploy-Vercel-black?style=flat&logo=vercel)](https://vercel.com/new)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Node.js Version](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen)](https://nodejs.org/)
+
+**[⚡ Quick Start](./QUICKSTART.md) • [📖 Full Docs](./README.md) • [🚀 Deploy Guide](./DEPLOYMENT.md) • [🔧 GitHub Setup](./GITHUB_SETUP.md)**
+
+---
+
+## Features
+
+✨ **Dashboard & Analytics**
+- Real-time lead metrics and KPIs
+- Conversion rate tracking
+- Monthly trends visualization
+- Pipeline health overview
+
+👥 **Lead Management**
+- Create, read, update, delete leads
+- Advanced filtering (status, source)
+- Full-text search
+- Export to CSV
+
+🔐 **Security & Access**
+- JWT authentication
+- Role-based access control (Admin/Sales)
+- Password hashing with bcrypt
+- Rate limiting & CORS protection
+
+🎨 **User Experience**
+- Modern dark-mode UI
+- Responsive design (mobile, tablet, desktop)
+- Smooth animations
+- Intuitive navigation
+
+🏗️ **Development**
+- Full TypeScript (frontend & backend)
+- Docker containerization
+- GitHub Actions CI/CD
+- MongoDB with Mongoose ODM
 
 ---
 
@@ -12,11 +52,13 @@ A full-stack Lead Management Dashboard built with the **MERN stack + TypeScript*
 | Backend | Node.js, Express.js, TypeScript |
 | Database | MongoDB + Mongoose |
 | Auth | JWT + bcrypt |
-| DevOps | Docker + Docker Compose |
+| DevOps | Docker + Docker Compose + Vercel |
 
 ---
 
-## Quick Start (Recommended — Docker)
+## 🚀 Quick Start
+
+### With Docker (Easiest)
 
 ```bash
 git clone https://github.com/yourname/smart-leads-dashboard
@@ -257,6 +299,92 @@ Returns a downloadable `.csv` file.
   "success": false,
   "error": "Error description"
 }
+```
+
+---
+
+## Deployment
+
+### Prerequisites
+- GitHub repository
+- Vercel account
+- MongoDB Atlas account (free tier available)
+
+### Deploy to Vercel (Recommended)
+
+#### 1. **Frontend Deployment**
+
+```bash
+# Push to GitHub
+git push origin main
+
+# Connect to Vercel
+vercel link
+
+# Set environment variables in Vercel dashboard
+# VITE_API_URL=https://your-api-url
+# VITE_APP_NAME=SmartLeads
+
+# Deploy
+vercel --prod
+```
+
+#### 2. **Backend Deployment (API)**
+
+Backend can be deployed to:
+- **Vercel Serverless Functions** (recommended)
+- **Railway** (simple & free-tier friendly)
+- **Render** or **Heroku**
+
+**For Vercel:**
+```bash
+vercel --prod --env MONGO_URI=mongodb+srv://... JWT_SECRET=...
+```
+
+**For Railway:**
+```bash
+railway up --environment=production
+```
+
+#### 3. **MongoDB Atlas Setup**
+
+```
+1. Create cluster at mongodb.com/atlas
+2. Get connection string: mongodb+srv://<user>:<password>@cluster.mongodb.net/smart-leads
+3. Add to backend environment variables
+```
+
+### GitHub Actions CI/CD
+
+The `.github/workflows/deploy.yml` automatically:
+- ✅ Runs tests on PR to `main`
+- ✅ Builds frontend
+- ✅ Deploys to Vercel on merge to `main`
+
+**Setup:**
+1. Create `.env.production` with production variables
+2. Add Vercel secrets in GitHub:
+   - `VERCEL_TOKEN`
+   - `VERCEL_ORG_ID`
+   - `VERCEL_PROJECT_ID`
+
+### Environment Variables
+
+**Frontend (.env.production)**
+```env
+VITE_API_URL=https://your-api-domain.com
+VITE_APP_NAME=SmartLeads
+```
+
+**Backend (.env)**
+```env
+NODE_ENV=production
+PORT=5000
+MONGO_URI=mongodb+srv://user:pass@cluster.mongodb.net/smart-leads
+JWT_SECRET=your_32_character_minimum_secret_key
+JWT_EXPIRES_IN=7d
+CLIENT_URL=https://your-frontend-domain.com
+CORS_ORIGIN=https://your-frontend-domain.com
 ```
 
 ---

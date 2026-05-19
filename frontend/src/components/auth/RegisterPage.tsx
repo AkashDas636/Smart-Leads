@@ -61,65 +61,69 @@ export default function RegisterPage({ onSwitchToLogin }: Props) {
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Animated gradient background */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] bg-indigo-500/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-[-20%] left-[-10%] w-[500px] h-[500px] bg-cyan-500/5 rounded-full blur-3xl" />
+        <div className="absolute top-[-30%] right-[-15%] w-[700px] h-[700px] bg-indigo-500/8 rounded-full blur-3xl animate-gradient-shift" />
+        <div className="absolute bottom-[-30%] left-[-15%] w-[600px] h-[600px] bg-cyan-500/8 rounded-full blur-3xl animate-gradient-shift" style={{ animationDelay: '-2s' }} />
       </div>
 
-      <div className="w-full max-w-md relative z-10">
-        <div className="flex items-center gap-2.5 mb-8">
-          <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-cyan-400 to-indigo-500 flex items-center justify-center shadow-lg shadow-cyan-500/20">
-            <Zap className="w-5 h-5 text-foreground" />
+      <div className="w-full max-w-md relative z-10 animate-in fade-in slide-in-from-bottom duration-500">
+        {/* Logo with animation */}
+        <div className="flex items-center gap-3 mb-12 animate-in fade-in slide-in-from-left duration-500">
+          <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-cyan-400 to-indigo-500 flex items-center justify-center shadow-lg shadow-cyan-500/30 group hover:scale-110 transition-transform duration-300 cursor-pointer">
+            <Zap className="w-6 h-6 text-white" />
           </div>
-          <span className="text-xl font-bold tracking-tight text-foreground">SmartLeads</span>
+          <span className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-indigo-400 bg-clip-text text-transparent tracking-tight">SmartLeads</span>
         </div>
 
-        <div className="bg-card border border-border rounded-2xl p-8 backdrop-blur-xl shadow-2xl">
-          <h1 className="text-2xl font-bold text-foreground mb-1">Create account</h1>
-          <p className="text-muted-foreground text-sm mb-7">Start managing your leads today</p>
+        {/* Main card */}
+        <div className="bg-card border border-border rounded-2xl p-8 backdrop-blur-xl shadow-card-lg hover:shadow-card hover:border-cyan-500/30 transition-all duration-300 animate-in fade-in slide-in-from-bottom duration-500 delay-100">
+          <h1 className="text-3xl font-bold text-foreground mb-2">Create account</h1>
+          <p className="text-muted-foreground text-sm mb-8">Start managing your leads today</p>
 
           {error && (
-            <div className="flex items-center gap-2 bg-rose-500/10 border border-rose-500/20 text-rose-400 text-sm rounded-lg px-4 py-3 mb-5">
-              <AlertCircle className="w-4 h-4 flex-shrink-0" />
-              <span>{error}</span>
+            <div className="flex items-center gap-3 bg-rose-500/15 border border-rose-500/40 text-rose-300 text-sm rounded-xl px-4 py-3.5 mb-6 animate-in slide-in-from-top duration-300 shadow-card">
+              <AlertCircle className="w-5 h-5 flex-shrink-0" />
+              <span className="font-medium">{error}</span>
             </div>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Name */}
-            <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1.5">Full Name</label>
+            <div className="animate-in fade-in slide-in-from-bottom duration-500 delay-200">
+              <label className="block text-sm font-semibold text-foreground mb-2.5">Full Name</label>
               <input
                 type="text"
                 placeholder="Alex Rivera"
                 {...field('name')}
-                className={`w-full bg-card border rounded-xl px-4 py-3 text-foreground placeholder-slate-500 text-sm outline-none focus:ring-1 transition-all ${errors.name ? 'border-rose-500/50 focus:ring-rose-500/30' : 'border-border focus:border-cyan-500/50 focus:ring-cyan-500/20'}`}
+                className={`w-full bg-card border rounded-xl px-4 py-3.5 text-foreground placeholder-muted-foreground text-sm outline-none focus:ring-2 focus:ring-cyan-500/20 transition-all duration-200 shadow-card hover:shadow-card-lg ${errors.name ? 'border-rose-500/50 focus:border-rose-500/50 focus:ring-rose-500/20' : 'border-border focus:border-cyan-500/50'}`}
               />
-              {errors.name && <p className="text-rose-400 text-xs mt-1.5 flex items-center gap-1"><AlertCircle className="w-3 h-3" />{errors.name}</p>}
+              {errors.name && <p className="text-rose-400 text-xs mt-2 flex items-center gap-1.5 font-medium"><AlertCircle className="w-3.5 h-3.5" />{errors.name}</p>}
             </div>
 
             {/* Email */}
-            <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1.5">Email</label>
+            <div className="animate-in fade-in slide-in-from-bottom duration-500 delay-300">
+              <label className="block text-sm font-semibold text-foreground mb-2.5">Email Address</label>
               <input
                 type="email"
                 placeholder="you@company.io"
                 {...field('email')}
-                className={`w-full bg-card border rounded-xl px-4 py-3 text-foreground placeholder-slate-500 text-sm outline-none focus:ring-1 transition-all ${errors.email ? 'border-rose-500/50 focus:ring-rose-500/30' : 'border-border focus:border-cyan-500/50 focus:ring-cyan-500/20'}`}
+                className={`w-full bg-card border rounded-xl px-4 py-3.5 text-foreground placeholder-muted-foreground text-sm outline-none focus:ring-2 focus:ring-cyan-500/20 transition-all duration-200 shadow-card hover:shadow-card-lg ${errors.email ? 'border-rose-500/50 focus:border-rose-500/50 focus:ring-rose-500/20' : 'border-border focus:border-cyan-500/50'}`}
               />
-              {errors.email && <p className="text-rose-400 text-xs mt-1.5 flex items-center gap-1"><AlertCircle className="w-3 h-3" />{errors.email}</p>}
+              {errors.email && <p className="text-rose-400 text-xs mt-2 flex items-center gap-1.5 font-medium"><AlertCircle className="w-3.5 h-3.5" />{errors.email}</p>}
             </div>
 
             {/* Role */}
-            <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1.5">Role</label>
-              <div className="grid grid-cols-2 gap-2">
-                {(['Admin', 'Sales'] as UserRole[]).map(role => (
+            <div className="animate-in fade-in slide-in-from-bottom duration-500 delay-400">
+              <label className="block text-sm font-semibold text-foreground mb-2.5">Role</label>
+              <div className="grid grid-cols-2 gap-3">
+                {(['Admin', 'Sales'] as UserRole[]).map((role, idx) => (
                   <button
                     key={role}
                     type="button"
                     onClick={() => setForm(p => ({ ...p, role }))}
-                    className={`flex items-center gap-2 px-4 py-3 rounded-xl border text-sm font-medium transition-all ${form.role === role ? 'bg-cyan-500/15 border-cyan-500/40 text-cyan-400' : 'bg-card border-border text-muted-foreground hover:border-border'}`}
+                    className={`flex items-center gap-2 px-4 py-3.5 rounded-xl border text-sm font-bold transition-all duration-200 hover:scale-105 shadow-card ${form.role === role ? 'bg-gradient-to-r from-cyan-500/20 to-indigo-500/20 border-cyan-500/40 text-cyan-300' : 'bg-card border-border text-muted-foreground hover:border-cyan-500/40 hover:bg-cyan-500/5'}`}
+                    style={{ animation: `fade-in 0.3s ease ${idx * 50}ms both` }}
                   >
                     {role === 'Admin' ? <Shield className="w-4 h-4" /> : <TrendingUp className="w-4 h-4" />}
                     {role}
@@ -129,38 +133,39 @@ export default function RegisterPage({ onSwitchToLogin }: Props) {
             </div>
 
             {/* Password */}
-            <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1.5">Password</label>
+            <div className="animate-in fade-in slide-in-from-bottom duration-500 delay-500">
+              <label className="block text-sm font-semibold text-foreground mb-2.5">Password</label>
               <div className="relative">
                 <input
                   type={showPass ? 'text' : 'password'}
                   placeholder="Min. 6 characters"
                   {...field('password')}
-                  className={`w-full bg-card border rounded-xl px-4 py-3 pr-11 text-foreground placeholder-slate-500 text-sm outline-none focus:ring-1 transition-all ${errors.password ? 'border-rose-500/50 focus:ring-rose-500/30' : 'border-border focus:border-cyan-500/50 focus:ring-cyan-500/20'}`}
+                  className={`w-full bg-card border rounded-xl px-4 py-3.5 pr-12 text-foreground placeholder-muted-foreground text-sm outline-none focus:ring-2 focus:ring-cyan-500/20 transition-all duration-200 shadow-card hover:shadow-card-lg ${errors.password ? 'border-rose-500/50 focus:border-rose-500/50 focus:ring-rose-500/20' : 'border-border focus:border-cyan-500/50'}`}
                 />
-                <button type="button" onClick={() => setShowPass(p => !p)} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-slate-300 transition-colors">
-                  {showPass ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                <button type="button" onClick={() => setShowPass(p => !p)} className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-all hover:scale-110 duration-200">
+                  {showPass ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                 </button>
               </div>
-              {errors.password && <p className="text-rose-400 text-xs mt-1.5 flex items-center gap-1"><AlertCircle className="w-3 h-3" />{errors.password}</p>}
+              {errors.password && <p className="text-rose-400 text-xs mt-2 flex items-center gap-1.5 font-medium"><AlertCircle className="w-3.5 h-3.5" />{errors.password}</p>}
             </div>
 
             {/* Confirm Password */}
-            <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1.5">Confirm Password</label>
+            <div className="animate-in fade-in slide-in-from-bottom duration-500 delay-600">
+              <label className="block text-sm font-semibold text-foreground mb-2.5">Confirm Password</label>
               <input
                 type="password"
                 placeholder="Repeat password"
                 {...field('confirmPassword')}
-                className={`w-full bg-card border rounded-xl px-4 py-3 text-foreground placeholder-slate-500 text-sm outline-none focus:ring-1 transition-all ${errors.confirmPassword ? 'border-rose-500/50 focus:ring-rose-500/30' : 'border-border focus:border-cyan-500/50 focus:ring-cyan-500/20'}`}
+                className={`w-full bg-card border rounded-xl px-4 py-3.5 text-foreground placeholder-muted-foreground text-sm outline-none focus:ring-2 focus:ring-cyan-500/20 transition-all duration-200 shadow-card hover:shadow-card-lg ${errors.confirmPassword ? 'border-rose-500/50 focus:border-rose-500/50 focus:ring-rose-500/20' : 'border-border focus:border-cyan-500/50'}`}
               />
-              {errors.confirmPassword && <p className="text-rose-400 text-xs mt-1.5 flex items-center gap-1"><AlertCircle className="w-3 h-3" />{errors.confirmPassword}</p>}
+              {errors.confirmPassword && <p className="text-rose-400 text-xs mt-2 flex items-center gap-1.5 font-medium"><AlertCircle className="w-3.5 h-3.5" />{errors.confirmPassword}</p>}
             </div>
 
+            {/* Submit button */}
             <button
               type="submit"
               disabled={loading}
-              className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-cyan-500 to-indigo-500 hover:from-cyan-400 hover:to-indigo-400 disabled:opacity-50 disabled:cursor-not-allowed text-foreground font-semibold py-3 rounded-xl transition-all duration-200 shadow-lg shadow-cyan-500/20 text-sm mt-2"
+              className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-cyan-500 to-indigo-500 hover:from-cyan-400 hover:to-indigo-400 disabled:from-gray-500 disabled:to-gray-600 disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold py-3.5 rounded-xl transition-all duration-200 shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/50 hover:scale-105 hover:-translate-y-0.5 text-sm mt-6 animate-in fade-in slide-in-from-bottom duration-500 delay-700"
             >
               {loading ? (
                 <span className="flex items-center gap-2">
@@ -176,9 +181,10 @@ export default function RegisterPage({ onSwitchToLogin }: Props) {
             </button>
           </form>
 
-          <p className="text-sm text-muted-foreground text-center mt-6">
+          {/* Sign in link */}
+          <p className="text-sm text-muted-foreground text-center mt-7 animate-in fade-in slide-in-from-bottom duration-500 delay-800">
             Already have an account?{' '}
-            <button onClick={onSwitchToLogin} className="text-cyan-400 hover:text-cyan-300 font-medium transition-colors">
+            <button onClick={onSwitchToLogin} className="text-cyan-400 hover:text-cyan-300 font-bold transition-colors hover:underline">
               Sign in
             </button>
           </p>

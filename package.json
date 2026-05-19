@@ -1,9 +1,44 @@
 {
   "name": "smart-leads",
+  "version": "1.0.0",
+  "description": "Professional Lead Management Dashboard with Analytics",
   "private": true,
   "packageManager": "pnpm@9.12.3",
   "scripts": {
-    "build": "cd frontend && pnpm run build",
-    "start": "cd frontend && pnpm run dev"
-  }
+    "dev": "concurrently \"cd frontend && pnpm run dev\" \"cd backend && npm run dev\"",
+    "build": "cd frontend && pnpm run build && cd ../backend && npm run build",
+    "build:frontend": "cd frontend && pnpm run build",
+    "build:backend": "cd backend && npm run build",
+    "start": "cd backend && npm start",
+    "start:frontend": "cd frontend && pnpm run preview",
+    "lint": "concurrently \"cd frontend && pnpm run lint\" \"cd backend && npm run lint || true\"",
+    "test": "echo \"No tests configured yet\"",
+    "setup": "bash setup.sh",
+    "docker:up": "docker-compose up --build",
+    "docker:down": "docker-compose down",
+    "db:seed": "cd backend && npm run seed || echo \"No seed script configured\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "keywords": [
+    "leads",
+    "crm",
+    "analytics",
+    "dashboard",
+    "typescript",
+    "react",
+    "express",
+    "mongodb"
+  ],
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourname/smart-leads-dashboard"
+  },
+  "author": "",
+  "license": "MIT"
 }
