@@ -11,7 +11,7 @@
     "build:backend": "cd backend && npm run build",
     "start": "cd backend && npm start",
     "start:frontend": "cd frontend && pnpm run preview",
-    "lint": "concurrently \"cd frontend && pnpm run lint\" \"cd backend && npm run lint || true\"",
+    "lint": "concurrently \"cd frontend && pnpm run lint\" \"cd backend && npm run lint || exit 0\"",
     "test": "echo \"No tests configured yet\"",
     "setup": "bash setup.sh",
     "docker:up": "docker-compose up --build",
