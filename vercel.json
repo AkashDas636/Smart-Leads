@@ -7,6 +7,5 @@
     "VITE_API_URL": "https://smart-leads-api.vercel.app",
     "VITE_APP_NAME": "SmartLeads"
   },
-  "regions": ["iad1"],
-  "nodeVersion": "20.x"
+  "regions": ["iad1"]
 }
