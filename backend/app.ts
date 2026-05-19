@@ -7,8 +7,19 @@ import rateLimit from 'express-rate-limit';
 import authRoutes from './routes/auth.js';
 import leadsRoutes from './routes/leads.js';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
+import { connectDB } from './config/database.js';
 
 const app = express();
+
+// ─── Database Connection Middleware (Serverless-optimized) ────────────────────
+app.use(async (_req, _res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
 
 // ─── Security Middleware ──────────────────────────────────────────────────────
 
