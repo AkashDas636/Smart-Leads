@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "buildCommand": "cd frontend && pnpm run build",
+  "buildCommand": "cd frontend && corepack prepare pnpm@9.12.3 --activate && pnpm run build",
   "outputDirectory": "frontend/dist",
-  "installCommand": "cd frontend && pnpm install",
+  "installCommand": "cd frontend && corepack prepare pnpm@9.12.3 --activate && pnpm install",
   "env": {
     "VITE_API_URL": "https://smart-leads-api.vercel.app",
     "VITE_APP_NAME": "SmartLeads"
   },
-  "regions": ["iad1"]
+  "regions": ["iad1"],
+  "nodeVersion": "20.x"
 }
